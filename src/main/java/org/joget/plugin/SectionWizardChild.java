@@ -30,7 +30,7 @@ public class SectionWizardChild extends Section implements PluginWebSupport {
     
     @Override
     public String getVersion() {
-        return "7.0.4";
+        return "7.0.5";
     }
     
     @Override
@@ -114,7 +114,7 @@ public class SectionWizardChild extends Section implements PluginWebSupport {
         formData.setActivityId(StringUtil.escapeString(request.getParameter("activityId"), StringUtil.TYPE_HTML, null));
         
         String nonce = request.getParameter("_nonce");
-        if (!SecurityUtil.verifyNonce(nonce, new String[]{"SectionWizardChild", request.getParameter("_elementId"), nonce})) {
+        if (!SecurityUtil.verifyNonce(nonce, new String[]{"SectionWizardChild", request.getParameter("_elementId")})) {
             response.setStatus(HttpServletResponse.SC_FORBIDDEN);
             return;
         }
