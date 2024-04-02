@@ -30,7 +30,7 @@ public class SectionWizardChild extends Section implements PluginWebSupport {
     
     @Override
     public String getVersion() {
-        return "7.0.8";
+        return Activator.VERSION;
     }
     
     @Override

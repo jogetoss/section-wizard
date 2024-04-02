@@ -12,6 +12,10 @@
             .wizard > .easyWizardSteps li.current {color:#000; font-weight: bold;}
             .wizard > .easyWizardSteps li.error {color:red;}
             .wizard > .easyWizardWrapper > .step.active {visibility: unset !important}
+            .wizard > .easyWizardWrapper > .step:not(.active) > .form-section-title {display: block !important;  padding: 1px;}
+            .wizard > .easyWizardWrapper > .step:not(.active) > .form-column {display: none}
+            .wizard > .easyWizardWrapper > .step:not(.active) > .subform-section-title {display: block !important; padding: 1px;}
+            .wizard > .easyWizardWrapper > .step:not(.active) > .subform-column {display: none}
             .wizard > .easyWizardWrapper > .step{visibility: hidden;display:block !important; padding:0px !important; border:0px !important; clear: right !important; margin:0 !important; margin-top:0px !important; box-shadow:none !important; }
             .wizard > .easyWizardWrapperContainer > .easyWizardWrapper > .step_wrapper > .step{display:block !important; padding:0px !important;  margin:0 !important; margin-top:0px !important; box-shadow:none !important; clear: right !important; border: 0px !important;}
             .wizard > .easyWizardButtons {overflow:hidden;padding:10px;}

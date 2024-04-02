@@ -23,7 +23,7 @@ public class SectionWizard extends Element implements FormBuilderPaletteElement,
 
     @Override
     public String getVersion() {
-        return "7.0.8";
+        return Activator.VERSION;
     }
 
     @Override
