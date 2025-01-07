@@ -12,6 +12,7 @@ import org.joget.apps.form.model.FormBuilderPaletteElement;
 import org.joget.apps.form.model.FormContainer;
 import org.joget.apps.form.model.FormData;
 import org.joget.apps.form.service.FormUtil;
+import org.joget.commons.util.SetupManager;
 import org.joget.workflow.util.WorkflowUtil;
 
 public class SectionWizard extends Element implements FormBuilderPaletteElement, FormContainer {
@@ -93,6 +94,9 @@ public class SectionWizard extends Element implements FormBuilderPaletteElement,
     @Override
     public String renderTemplate(FormData formData, Map dataModel) {
         String template = "sectionWizard.ftl";
+        SetupManager setupManager = (SetupManager) AppUtil.getApplicationContext().getBean("setupManager");
+        String rightToLeft = setupManager.getSettingValue("rightToLeft");
+        dataModel.put("rightToLeft", "true".equalsIgnoreCase(rightToLeft));
 
         String html = FormUtil.generateElementHtml(this, formData, template, dataModel);
         return html;

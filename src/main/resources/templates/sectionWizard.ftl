@@ -3,7 +3,7 @@
         <span class='form-floating-label'>SECTION WIZARD</span>
     </div>
 <#else>
-    <#if !(request.getAttribute("org.joget.plugin.SectionWizard")??) >
+   <#if !(request.getAttribute("org.joget.plugin.SectionWizard")??) >
         <script type="text/javascript" src="${request.contextPath}/plugin/org.joget.plugin.SectionWizard/js/jquery.easyWizard.js"></script>
         <style type="text/css">
             .wizard > .easyWizardSteps {list-style:none;width:100%;overflow:hidden;margin:0;padding:0;border-bottom:1px solid #ccc;margin-bottom:20px}
@@ -22,6 +22,13 @@
             .wizard > .easyWizardButtons button, .easyWizardButtons .submit {cursor:pointer}
             .wizard > .easyWizardButtons .prev {float:left}
             .wizard > .easyWizardButtons .next, .easyWizardButtons .submit {float:right}
+            
+            .wizard.rtl > .easyWizardSteps {direction:rtl}
+            .wizard.rtl > .easyWizardSteps li {margin-right:0; margin-left:20px}
+            .wizard.rtl > .easyWizardWrapper > .step {clear:left !important; float:right}
+            .wizard.rtl > .easyWizardWrapperContainer > .easyWizardWrapper > .step_wrapper > .step {clear:left !important; float:right}
+            .wizard.rtl > .easyWizardButtons .prev {float:right}
+            .wizard.rtl > .easyWizardButtons .next, .wizard.rtl > .easyWizardButtons .submit {float:left}        
         </style>
     </#if>
     <div id="${elementParamName!}" class="wizard">
@@ -39,9 +46,16 @@
             };
 
             $("#${elementParamName!}").css("max-width", $("#${elementParamName!} .step").width() + "px");
+            
+            if (${rightToLeft?string}) {
+             $("#${elementParamName!}").addClass("rtl");
+             }            
             $("#${elementParamName!}").easyWizard({
                  submitButton: false,
-                 clickableStep: '${element.properties.clickableStep!}'
+                 clickableStep: '${element.properties.clickableStep!}',
+                 rightToLeft: ${rightToLeft?string} // Pass the rightToLeft property
+
+
             });
         });
     </script>
