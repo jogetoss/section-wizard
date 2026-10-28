@@ -2,7 +2,10 @@ package org.joget.plugin;
 
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Collections;
+import java.util.IdentityHashMap;
 import java.util.Map;
+import java.util.Set;
 import javax.servlet.http.HttpServletRequest;
 import org.joget.apps.app.service.AppUtil;
 import org.joget.apps.form.model.Element;
@@ -41,7 +44,7 @@ public class SectionWizard extends Element implements FormBuilderPaletteElement,
         //move configured sections under this element
         if (!isFormBuilderActive() && !init && !"true".equals(getPropertyString("__DISABLED__"))) {
             init = true;
-            Form form = FormUtil.findRootForm(parent);
+            Form form = findRootFormSafely(parent);
             if (form != null) {
                 String[] ids = getPropertyString("sections").split(",");
 
@@ -49,7 +52,7 @@ public class SectionWizard extends Element implements FormBuilderPaletteElement,
 
                 for (String id : ids) {
                     Element s = getSection(form, id);
-                    if (s != null) {
+                    if (s != null && !isSelfOrAncestor(s, parent)) {
                         Element sc = new SectionWizardChild();
                         sc.setParent(this);
                         sc.setChildren(s.getChildren());
@@ -82,6 +85,37 @@ public class SectionWizard extends Element implements FormBuilderPaletteElement,
         return newChild;
     }
     
+    /**
+     * A section that contains this element cannot be wrapped as one of its steps,
+     * otherwise the element tree becomes circular.
+     */
+    protected boolean isSelfOrAncestor(Element section, Element parent) {
+        Set<Element> visited = Collections.newSetFromMap(new IdentityHashMap<Element, Boolean>());
+        Element e = parent;
+        while (e != null && visited.add(e)) {
+            if (e == section) {
+                return true;
+            }
+            e = e.getParent();
+        }
+        return section == this;
+    }
+
+    /**
+     * Same as FormUtil.findRootForm, but stops if the parent chain is already circular.
+     */
+    protected Form findRootFormSafely(Element element) {
+        Set<Element> visited = Collections.newSetFromMap(new IdentityHashMap<Element, Boolean>());
+        Element e = element;
+        while (e != null && visited.add(e)) {
+            if (e instanceof Form) {
+                return (Form) e;
+            }
+            e = e.getParent();
+        }
+        return null;
+    }
+
     protected Element getSection(Form form, String id) {
         for (Element s : form.getChildren()) {
             if (id.equals(s.getPropertyString(FormUtil.PROPERTY_ID))) {
