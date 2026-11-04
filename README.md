@@ -29,3 +29,12 @@ Please note that all interactions fall under our [Code of Conduct](https://githu
     limitations under the License.
 
 NOTE: This software may depend on other packages that may be licensed under different open source licenses.
+
+## Regression repro app
+
+`APP_SectionWizardRepro-1.jwa` is a minimal app for checking Section Wizard against circular configurations.
+
+- **Bad (self-referencing wizard)** — a Section Wizard element placed inside `section_a` that lists `section_a` (and a missing `section_b`), twice. Before the fix, wrapping the ancestor section made the parent chain circular and the request spun forever in `FormUtil.findRootForm`. With the fix the element is ignored and the form renders normally.
+- **Good (own-section wizard)** — Section Wizard in its own section wrapping two earlier sections. Must still render as two steps.
+
+Sections are parsed in order, so the sections listed in `sections` must appear **before** the Section Wizard element in the form.
